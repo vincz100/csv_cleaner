@@ -1,0 +1,7 @@
+# cleaner un csv 
+# créer une ligne par numéro de parcelle
+
+import csv
+permis = open('permis.csv')
+permisReader = csv.reader(permis)
+permisData = list(permisReader)
