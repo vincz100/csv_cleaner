@@ -2,7 +2,34 @@
 
 # créer une ligne par numéro de parcelle
 
+import os
 import csv
-permis = open('permis.csv')
-permisReader = csv.reader(permis)
-permisData = list(permisReader)
+
+os.chdir('C:\Users\Vincent\Desktop\TEMP')
+with open('exemple_csv.csv') as permis:
+   permisReader = csv.reader(permis)
+   permisData = list(permisReader)
+
+newFile = []
+
+for i in range(0,len(permisData)):
+   liste = str(permisData[i]).split(';')
+   if '|' in liste[12]:
+       parcelles = liste[12].split('|')
+       ligne = liste
+       for j in range(0,len(parcelles)):
+           ligne[12] = parcelles[j]
+           print ligne[12]
+           newFile.append(ligne)
+   
+   else :
+       newFile.append(liste)
+
+
+for i in newFile:
+   print i[12]
+
+with open('output.csv','wb') as output:
+   wr = csv.writer(output,delimiter=';',quoting=csv.QUOTE_ALL)
+   for i in range(0,len(newFile)):
+       wr.writerow(newFile[i])
