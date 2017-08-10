@@ -1,35 +1,32 @@
-# cleaner un csv 
-
-# créer une ligne par numéro de parcelle
+# -*- coding: utf-8 -*-
 
 import os
 import csv
 
-os.chdir('C:\Users\Vincent\Desktop\TEMP')
-with open('exemple_csv.csv') as permis:
-   permisReader = csv.reader(permis)
-   permisData = list(permisReader)
+with open('./exemple_csv.csv') as permis:
+  permisReader = csv.reader(permis)
+  permisData = list(permisReader)
 
-newFile = []
+newFile = list()
 
-for i in range(0,len(permisData)):
-   liste = str(permisData[i]).split(';')
-   if '|' in liste[12]:
-       parcelles = liste[12].split('|')
-       ligne = liste
-       for j in range(0,len(parcelles)):
-           ligne[12] = parcelles[j]
-           print ligne[12]
-           newFile.append(ligne)
-   
-   else :
-       newFile.append(liste)
+for i in range(0, len(permisData)):
+  liste = str(permisData[i]).split(';')
 
-
-for i in newFile:
-   print i[12]
+  parcelles = liste[12].split('|')
+  ligne = liste
+  
+  for j in range(0, len(parcelles)):
+       if parcelles[j].startswith(' '):
+           parcelles[j] = parcelles[j][1:]
+       ligne[12] = parcelles[j]
+       ligneConcat = ligne[0]
+       for k in range(1, len(ligne)):
+           ligneConcat = ligneConcat + ';' + ligne[k]
+       newFile.append(ligneConcat)
 
 with open('output.csv','wb') as output:
-   wr = csv.writer(output,delimiter=';',quoting=csv.QUOTE_ALL)
-   for i in range(0,len(newFile)):
-       wr.writerow(newFile[i])
+  wr = csv.writer(output, quoting=csv.QUOTE_NONE, escapechar='\\')
+  for i in range(0, len(newFile)):
+      rowToWrite = [newFile[i]]
+      print rowToWrite
+      wr.writerow(rowToWrite)
